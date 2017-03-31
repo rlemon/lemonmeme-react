@@ -1,0 +1,17 @@
+{
+	"presets": [
+		[ "env", {
+			"targets": {
+				"chrome": 52
+			}
+		}]
+	],
+	"plugins": [
+		"transform-react-jsx",
+		"transform-object-rest-spread",
+		"transform-runtime",
+		"transform-class-properties",
+		"syntax-async-functions",
+		"transform-regenerator"
+	]
+}
