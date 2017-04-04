@@ -3,26 +3,60 @@ import React, { Component } from 'react';
 export default class MemeCanvas extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			meme: null,
-			topText: '',
-			bottomText: '',
-			settings: {
-
-			}
-		};
 	}
 
 	shouldComponentUpdate() {
 		return false;
 	}
 
-	componentWillReceiveProps(props) {
-		let { meme, topText, bottomText, settings } = props;
-		this.setState({ meme, topText, bottomText, settings }, this.draw);
+	componentWillReceiveProps(props) { // I don't need to fuck with state.. 
+		// but I'm also not sure if this is the correct way to go about this. 
+		// in my head it makes sense. 
+		if( !props.meme ) return;
+		const canvas = this.refs.memeCanvas;
+		const context = canvas.getContext('2d');
+
+		const maxWidth = 640;
+		const maxHeight = 480;
+
+		let { naturalHeight: height, naturalWidth: width } = props.meme;
+
+		while( height > maxHeight || width > maxWidth ) {
+			height -= 1;
+			width -= 1;
+		}
+
+		/* Draw the background image, scaled to the maxes */
+		canvas.height = height;
+		canvas.width = width;
+
+		context.drawImage(props.meme, 0, 0, width, height);
+
+
+		context.font = 'bold 36px Roboto'; // make options for this shizznat.
+		context.fillStyle = 'white';
+		context.strokeStyle = 'black';
+		context.strokeWidth = 12;
+		/* Draw the top text */
+		if( props.topText ) {
+			const topLines = this.getLines(props.topText, width * 0.98 , context); // demo stuff
+			topLines.forEach((line, index) => {
+				context.fillText(line, width/2 - context.measureText(line).width/2, (index + 1) * 36) // demo stuff
+				context.strokeText(line, width/2 - context.measureText(line).width/2, (index + 1) * 36) // demo stuff
+			})
+		}
+
+		/* Draw the bottom text */
+		if( props.bottomText ) {
+			const bottomLines = this.getLines(props.bottomText, width * 0.98 , context); // demo stuff
+			bottomLines.reverse().forEach((line, index) => {
+				context.fillText(line, width/2 - context.measureText(line).width/2, height - index * 36 - 12) // demo stuff
+				context.strokeText(line, width/2 - context.measureText(line).width/2, height - index * 36 - 12) // demo stuff
+			})
+		}
 	}
 
-	getLines(text, maxWidth, context) {
+	getLines(text, maxWidth, context) { // this entire thing is terribly inefficient
 		const words = text.split(' ');
 		const lines = [];
 		let line = '';
@@ -52,40 +86,7 @@ export default class MemeCanvas extends Component {
 		return lines;
 	}
 
-	draw() {
-		if( !this.state.meme ) return;
-		const canvas = this.refs.memeCanvas;
-		const context = canvas.getContext('2d');
-
-		const maxWidth = canvas.width = 640;
-		const maxHeight = canvas.height = 480;
-
-		let { height, width } = this.state.meme;
-		while( height > maxHeight || width > maxWidth ) {
-			height -= 1;
-			width -= 1;
-		}
-
-		/* Draw the background image, scaled to the container */
-
-		context.drawImage(this.state.meme, (maxWidth-width)/2, (maxHeight-height)/2, width, height);
-
-		/* Draw the top text */
-		if( this.state.topText ) {
-			context.font = '24px Roboto'; // make options for this shizznat.
-			const topLines = this.getLines(this.state.topText, maxWidth * 0.9 , context); // demo stuff
-			topLines.forEach((line, index) => {
-				context.fillText(line, maxWidth/2 - context.measureText(line).width/2, (index + 1) * 20) // demo stuff
-			})
-		}
-
-		/* Draw the bottom text */
-		if( this.state.bottomText ) {
-
-		}
-	}
-
 	render() {
-		return <canvas ref="memeCanvas" style={{outline: '1px solid red'}}></canvas>;
+		return <canvas ref="memeCanvas" className="meme-canvas"></canvas>;
 	}
 }

@@ -21,3 +21,27 @@ body {
 	height: 100%; 
 	width: 100%;
 }
+
+.meme-list-item {
+	width: 100%;
+	margin: 14px;
+}
+
+.app-body {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-around;
+	margin-top: 12px;
+
+	.canvas-container {
+		width: 50%;
+		text-align: right;
+		.meme-canvas {
+			box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
+		}
+	}
+	.inputs-container {
+		width: 50%;
+		padding: 36px;
+	}
+}

@@ -25,7 +25,7 @@ const config = {
 			{ test: /\.jsx?$/, exclude: [ /node_modules/ ], use: [ 'babel-loader' ] },
 			{ test: /\.scss$/, use: [
 				{ loader: 'style-loader', options: { singleton: true } },
-				{ loader: 'css-loader', options: { minimize: false, modules: true } },
+				{ loader: 'css-loader', options: { minimize: true, modules: false } },
 				{ loader: 'sass-loader' }
 			] },
 			{ test: /\.png$/, use: [ { loader: 'file-loader', options: { name: 'assets/[hash].[ext]' } } ] }
@@ -58,10 +58,10 @@ const config = {
 };
 
 if( NODE_ENV === 'production' ) {
-	configs.plugins.push(new webpack.optimize.UglifyJsPlugin({
+	config.plugins.push(new webpack.optimize.UglifyJsPlugin({
 		sourceMap: true
 	}));
-	configs.plugins.push(new CompressionPlugin({
+	config.plugins.push(new CompressionPlugin({
 		asset: '[path].gz[query]',
 		algorithm: 'gzip',
 		test: /\.js$|\.html$/,

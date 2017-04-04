@@ -3,8 +3,13 @@ import React, { Component } from 'react';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
+import TextField from 'material-ui/TextField';
 
 import MemeCanvas from './components/meme-canvas';
+
+import getMemeList from './memes';
+
+import './styles/style.scss';
 
 export default class App extends Component {
 	constructor(props) {
@@ -12,32 +17,38 @@ export default class App extends Component {
 		this.state = {
 			leftDrawerIsOpen: false,
 			memeSource: null,
-			topText: null
+			topText: null,
+			bottomText: null
 		};
+
 	}
 
 	toggleLeftDrawer() {
 		this.setState({leftDrawerIsOpen: !this.state.leftDrawerIsOpen});
 	}
 
-	handleMemeSelection(memeSource) {
-		this.toggleLeftDrawer();
-		this.setState({memeSource})
+	handleMemeSelection(elm) {
+		this.setState({memeSource: elm, leftDrawerIsOpen: false}); // close the drawer while we're at it. 
 	}
 
-	handleKeypress(elm) {
+	handleTopLineInput(elm) {
 		this.setState({topText: elm.value || null});
+	}
+
+	handleBottomLineInput(elm) {
+		this.setState({bottomText: elm.value || null});
 	}
 
 	render() {
 
-		const images = [
-			<img src="https://i.imgur.com/04qujU7.png" />,
-			<img src="https://i.imgur.com/0sGqmQt.png" />,
-			<img src="https://i.imgur.com/1eiPZP9.jpg" />,
-			<img src="https://i.imgur.com/iTPYaED.jpg" />,
-			<img src="https://i.imgur.com/2lioI62.png" />
-		]
+		const menuItems = [];
+		const memelist = getMemeList();
+		for( const category in memelist ) {
+			menuItems.push(<h3 key={category}>{category}</h3>);
+			for( const item of memelist[category] ) {
+				menuItems.push(<MenuItem key={item} onTouchTap={event=>this.handleMemeSelection(event.target)}><img className='meme-list-item' src={`memes/${category}/${item}`} /></MenuItem>)
+			}
+		}
 
 		return <div className="app-wrapper">
 
@@ -48,17 +59,21 @@ export default class App extends Component {
 					docked={false}
 					onRequestChange={leftDrawerIsOpen => this.setState({leftDrawerIsOpen})} >
 				<h3>meme list</h3>
-				{
-					React.Children.map(images, child => {
-						return <MenuItem onTouchTap={event=>this.handleMemeSelection(event.target)}>{child}</MenuItem>
-					})
-				}
+				{menuItems}
 			</Drawer>
 
-			<MemeCanvas meme={this.state.memeSource} topText={this.state.topText} />
+			<div className="app-body">
 
-			<input type="text" onKeyUp={event => this.handleKeypress(event.target) } />
+				<div className="canvas-container">
+					<MemeCanvas meme={this.state.memeSource} topText={this.state.topText} bottomText={this.state.bottomText} />
+				</div>
+				<div className="inputs-container">
+					<TextField fullWidth={true} hintText='Top Line' onChange={event => this.handleTopLineInput(event.target)} />
+					<TextField fullWidth={true} hintText='Bottom Line' onChange={event => this.handleBottomLineInput(event.target)} />
+				</div>
+
+			</div>
 
 		</div>;
 	}
-} 
+}
