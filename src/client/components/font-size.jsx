@@ -13,7 +13,7 @@ export default class FontSize extends Component {
 		this.props.onChange(value);
 	}
 	render() {
-		return <div>
+		return <div className='font-size-input'>
 			Font Size 
 			<Slider
 				min={this.props.min}

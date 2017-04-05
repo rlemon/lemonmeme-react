@@ -65,6 +65,15 @@ body {
 
 .color-picker-canvas-wrapper {
 	position: absolute;
+	z-index: 99999;
+}
+
+.font-size-input > div {
+	width: 50%; 
+	min-width: 256px;
+	display: inline-block;
+	vertical-align: middle;
+	padding: 24px 12px 0 12px;
 }
 
 .overlay {
