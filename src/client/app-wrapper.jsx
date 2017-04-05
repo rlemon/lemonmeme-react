@@ -4,7 +4,7 @@ import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
-
+import LineInput from './components/line-input';
 import MemeCanvas from './components/meme-canvas';
 
 import getMemeList from './memes';
@@ -31,8 +31,10 @@ export default class App extends Component {
 		this.setState({memeSource: elm, leftDrawerIsOpen: false}); // close the drawer while we're at it. 
 	}
 
-	handleTopLineInput(elm) {
-		this.setState({topText: elm.value || null});
+	handleTopLineInput(options) {
+		this.setState({
+			topText: options
+		})
 	}
 
 	handleBottomLineInput(elm) {
@@ -68,10 +70,10 @@ export default class App extends Component {
 					<MemeCanvas meme={this.state.memeSource} topText={this.state.topText} bottomText={this.state.bottomText} />
 				</div>
 				<div className="inputs-container">
-					<TextField fullWidth={true} hintText='Top Line' onChange={event => this.handleTopLineInput(event.target)} />
-					<TextField fullWidth={true} hintText='Bottom Line' onChange={event => this.handleBottomLineInput(event.target)} />
+					<LineInput
+						inputLabel='Top Line'
+						onChange={options => this.handleTopLineInput(options)} />
 				</div>
-
 			</div>
 
 		</div>;

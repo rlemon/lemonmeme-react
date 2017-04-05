@@ -34,12 +34,12 @@ export default class MemeCanvas extends Component {
 
 
 		context.font = 'bold 36px Roboto'; // make options for this shizznat.
-		context.fillStyle = 'white';
-		context.strokeStyle = 'black';
 		context.strokeWidth = 12;
 		/* Draw the top text */
 		if( props.topText ) {
-			const topLines = this.getLines(props.topText, width * 0.98 , context); // demo stuff
+			context.fillStyle = props.topText.fillColor;
+			context.strokeStyle = props.topText.strokeColor;
+			const topLines = this.getLines(props.topText.text, width * 0.98 , context); // demo stuff
 			topLines.forEach((line, index) => {
 				context.fillText(line, width/2 - context.measureText(line).width/2, (index + 1) * 36) // demo stuff
 				context.strokeText(line, width/2 - context.measureText(line).width/2, (index + 1) * 36) // demo stuff
@@ -48,7 +48,9 @@ export default class MemeCanvas extends Component {
 
 		/* Draw the bottom text */
 		if( props.bottomText ) {
-			const bottomLines = this.getLines(props.bottomText, width * 0.98 , context); // demo stuff
+			context.fillStyle = props.bottomText.fillColor;
+			context.strokeStyle = props.bottomText.strokeColor;
+			const bottomLines = this.getLines(props.bottomText.text, width * 0.98 , context); // demo stuff
 			bottomLines.reverse().forEach((line, index) => {
 				context.fillText(line, width/2 - context.measureText(line).width/2, height - index * 36 - 12) // demo stuff
 				context.strokeText(line, width/2 - context.measureText(line).width/2, height - index * 36 - 12) // demo stuff

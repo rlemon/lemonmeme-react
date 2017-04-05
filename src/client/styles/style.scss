@@ -45,3 +45,32 @@ body {
 		padding: 36px;
 	}
 }
+
+
+.color-picker-input {
+	.color-picker-label {
+		display: inline-block;
+		margin-right: 14px;
+	}
+	.color-picker-button {
+		width: 64px;
+		height: 32px;
+		span {
+			height: 100%;
+			width: 100%; 
+			display: block;
+		}
+	}
+}
+
+.color-picker-canvas-wrapper {
+	position: absolute;
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
