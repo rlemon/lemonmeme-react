@@ -42,3 +42,5 @@ lib/
 
 # babel compile cache
 .awcache/
+
+sftp-config.json
