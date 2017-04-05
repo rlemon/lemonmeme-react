@@ -37,8 +37,10 @@ export default class App extends Component {
 		})
 	}
 
-	handleBottomLineInput(elm) {
-		this.setState({bottomText: elm.value || null});
+	handleBottomLineInput(options) {
+		this.setState({
+			bottomText: options
+		})
 	}
 
 	render() {
@@ -71,8 +73,13 @@ export default class App extends Component {
 				</div>
 				<div className="inputs-container">
 					<LineInput
+						key='topLine'
 						inputLabel='Top Line'
 						onChange={options => this.handleTopLineInput(options)} />
+					<LineInput
+						key='bottomLine'
+						inputLabel='Bottom Line'
+						onChange={options => this.handleBottomLineInput(options)} />
 				</div>
 			</div>
 

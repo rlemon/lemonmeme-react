@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import ColorPicker from './color-picker';
+import FontSize from './font-size';
 
 export default class LineInput extends Component {
 	constructor(props) {
@@ -8,11 +9,13 @@ export default class LineInput extends Component {
 		this.options = {
 			fillColor: '#F5F5F5',
 			strokeColor: '#242424',
-			text: ''
+			text: '',
+			fontSize: 32
 		};
 	}
 	handleChange(prop, value) {
 		this.options[prop] = value;
+		console.log('change', prop, value);
 		this.props.onChange(this.options);
 	}
 	render() {
@@ -33,6 +36,12 @@ export default class LineInput extends Component {
 					onChange={color => this.handleChange('strokeColor', color.hex)}
 					label='Stroke Color' />
 
+
+				<FontSize
+					value={this.options.fontSize}
+					min={8}
+					max={72}
+					onChange={value => this.handleChange('fontSize', value)} />
 		</div>;
 	}
 }
