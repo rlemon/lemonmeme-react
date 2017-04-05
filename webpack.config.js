@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const { WebpackBundleSizeAnalyzerPlugin } = require('webpack-bundle-size-analyzer');
 
 const { NODE_ENV = 'development', PORT = 8080 } = process.env;
 
@@ -36,6 +37,7 @@ const config = {
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NamedModulesPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
+		new WebpackBundleSizeAnalyzerPlugin('./webpack-report.txt'),
 		new webpack.DefinePlugin({ // so react will build in 'production mode'
 			'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
 		}),
@@ -58,7 +60,10 @@ const config = {
 };
 
 if( NODE_ENV === 'production' ) {
+	console.log('production build')
 	config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+		mangle: true,
+		compress: true,
 		sourceMap: true
 	}));
 	config.plugins.push(new CompressionPlugin({
